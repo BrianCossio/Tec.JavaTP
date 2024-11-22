@@ -12,6 +12,7 @@
 <body>
 <h1>Crear</h1>
 <form action="articulos" method="post">
+<input type = "hidden" value = "insert" name ="accion"/>
     <p>Nombre: <input type="text" name="nombre" /></p>
     <p>Precio: <input type="text" name="precio" /></p>
     <p>Descripción: <input type="text" name="descripcion" /></p>

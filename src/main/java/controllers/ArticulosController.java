@@ -75,7 +75,7 @@ public class ArticulosController extends HttpServlet {
 		request.getRequestDispatcher("/views/articulos/edit.jsp").forward(request, response);
 	}
 
-//NO ME LO MUESTRA
+
 	private void getShow(HttpServletRequest request, HttpServletResponse response) 
 			throws ServletException, IOException {
 		String sId= request.getParameter("id");
@@ -91,13 +91,7 @@ public class ArticulosController extends HttpServlet {
 
 	private void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-//		String accion = request.getParameter("accion");
-//		// accion= Optional.ofNullable(accion).orElse("insert");
-//		switch (accion) {
-//		case "insert" -> postInsert(request,response);
-//		default -> response.sendError(404);
-//		
-//		}
+	
 		ArticuloRepo repo = ArticulosRepoSingleton.getInstance();
 		List <Articulo> listaArt = repo.getAll();
 		request.setAttribute("listita", listaArt);
@@ -108,9 +102,7 @@ public class ArticulosController extends HttpServlet {
 	}
 
 
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
-			throws ServletException, IOException {
-		
+	private void postInsert(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		String nombre = request.getParameter("nombre");
 		String descripcion = request.getParameter("descripcion");
 		String sPrecio = request.getParameter("precio");
@@ -121,6 +113,67 @@ public class ArticulosController extends HttpServlet {
 		articulosRepo.insert(articu);
 	
 		response.sendRedirect("articulos");
+		
+	}
+
+
+	protected void doPost(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		//LA EXCEPCION NO SE POR QUE NO ME FUNCIONA, bueno a veces si xdd
+		String accion = request.getParameter("accion");
+		if(accion==null) {
+			response.sendError(400, "No hay accion");
+			return;
+		}
+		//accion= Optional.ofNullable(accion).orElse("insert");
+		switch (accion) {
+		case "insert" -> postInsert(request,response);
+		case "update" -> postUpdate(request,response);
+		case "delete" -> postDelete(request,response);
+		default -> response.sendError(404);
+		
+		}
+//		String nombre = request.getParameter("nombre");
+//		String descripcion = request.getParameter("descripcion");
+//		String sPrecio = request.getParameter("precio");
+//		double precio= Double.parseDouble(sPrecio);
+//		
+//		Articulo articu = new Articulo(nombre, descripcion, precio);
+//		
+//		articulosRepo.insert(articu);
+//	
+//		response.sendRedirect("articulos");
+	}
+
+
+	private void postDelete(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String sId= request.getParameter("id");
+		int id= Integer.parseInt(sId);
+		
+		articulosRepo.delete(id);
+		
+		response.sendRedirect("articulos");
+	}
+
+//NO ME ESTA EDITANDO, ME CREA UNO NUEVO
+	private void postUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException {
+		String sId= request.getParameter("id");
+		int id= Integer.parseInt(sId);
+		
+		String nombre = request.getParameter("nombre");
+		String descripcion = request.getParameter("descripcion");
+		String sPrecio = request.getParameter("precio");
+		double precio= Double.parseDouble(sPrecio);
+		
+		Articulo articu = articulosRepo.findById(id);
+		articu.setNombre(nombre);
+		articu.setDescripcion(descripcion);
+		articu.setPrecio(precio);
+		// ESTO ES SOLAMENTE PARA BASE DE DATOS
+		articulosRepo.update(articu);
+		
+		response.sendRedirect("articulos");
+		
 	}
 
 }

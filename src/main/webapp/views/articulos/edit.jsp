@@ -10,15 +10,14 @@
 </head>
 <body>
 <h1>Editar</h1>
-<form action="" method="post"></form>
-<p>ID: <input value="${articulo.id}"name="id"/>
- <p>
- <p>Nombre: <input value="${articulo.nombre}"name="nombre"/>
- <p>
- <p>Precio: <input value="${articulo.precio}"name="precio"/>
- <p>
- <p>Descripcion: <input value="${articulo.precio}"name="descripcion"/>
- <p>
- <input type="submit" value= "Editar"/>
+<form action="articulos" method="post">
+  <input type="hidden" name="accion" value="insert"/> <!-- o el valor que corresponda -->
+  <p>ID: <input value="${articulo.id}" name="id" /></p>
+  <p>Nombre: <input value="${articulo.nombre}" name="nombre" /></p>
+  <p>Precio: <input value="${articulo.precio}" name="precio" /></p>
+  <p>Descripcion: <input value="${articulo.descripcion}" name="descripcion" /></p>
+  <input type="submit" value="Editar"/>
+</form>
+
 </body>
 </html>

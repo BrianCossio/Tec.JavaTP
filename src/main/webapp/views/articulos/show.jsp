@@ -26,7 +26,11 @@ Descripcion:
 <c:out value= "${articulo.descripcion }"/> 
 </p>
 <p>
-
+<form action ="articulos" method="post">
+<input type = "hidden" name ="id" value ="${articulo.id }">
+<input type = "hidden" name ="accion" value= "delete">
+<input type = "submit" value = "Eliminar Articulo">
+</form>
 </body>
 </html>
 
