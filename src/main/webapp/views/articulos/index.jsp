@@ -10,6 +10,12 @@
 <title>Articulos</title>
 </head>
 <body>
+
+<h1>Bienvenido <c:out value="${sessionScope.usuario.nombre }" default="Desconocido"/></h1>
+
+
+
+
 <a href="articulos?accion=create">Agregar articulo</a>
 <table border ="1">
 <thead>

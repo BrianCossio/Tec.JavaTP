@@ -11,13 +11,14 @@
 <body>
 <h1>Editar</h1>
 <form action="articulos" method="post">
-  <input type="hidden" name="accion" value="insert"/> <!-- o el valor que corresponda -->
-  <p>ID: <input value="${articulo.id}" name="id" /></p>
+  <input type="hidden" name="accion" value="update"/> <!-- Cambiar a update para reflejar la acción de actualización -->
+  <input type="hidden" name="id" value="${articulo.id}"/> <!-- Asegúrate de enviar el ID como un campo oculto -->
   <p>Nombre: <input value="${articulo.nombre}" name="nombre" /></p>
   <p>Precio: <input value="${articulo.precio}" name="precio" /></p>
   <p>Descripcion: <input value="${articulo.descripcion}" name="descripcion" /></p>
   <input type="submit" value="Editar"/>
 </form>
+
 
 </body>
 </html>

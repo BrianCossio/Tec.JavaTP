@@ -1,19 +1,22 @@
 package repositories.interfaces;
 
+import java.io.IOException;
 import java.util.List;
 
 import models.Articulo;
 
 public interface ArticuloRepo {
 	
-	public List<Articulo> getAll();
+	//throws por si se utiliza base de datos (entrada salida)
 	
-	public Articulo findById(int id);
+	public List<Articulo> getAll() throws IOException;
 	
-	public void insert (Articulo articulo);
+	public Articulo findById(int id) throws IOException;
 	
-	public void update (Articulo articulo); //ESTO ES PARA BASE DE DATOS CREO xddd
+	public void insert (Articulo articulo) throws IOException;
 	
-	public void delete(int id);
+	public void update (Articulo articulo) throws IOException; 
+	
+	public void delete(int id)throws IOException ;
 
 }

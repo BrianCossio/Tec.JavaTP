@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import factory.RepoFactory;
 import models.Articulo;
 import repositories.ArticulosRepoSingleton;
 import repositories.interfaces.ArticuloRepo;
@@ -26,7 +27,8 @@ public class ArticulosController extends HttpServlet {
 	
 	
     public ArticulosController() {
-       this.articulosRepo=ArticulosRepoSingleton.getInstance();
+    	RepoFactory factory = new RepoFactory();
+       this.articulosRepo=factory.getArticuloRepo(); 
     }
 
 	
@@ -66,9 +68,9 @@ public class ArticulosController extends HttpServlet {
 	private void getEdit(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String sId= request.getParameter("id");
 		int id = Integer.parseInt(sId);
-		ArticuloRepo repo = ArticulosRepoSingleton.getInstance();
 		
-		Articulo articu = repo.findById(id);
+		
+		Articulo articu = articulosRepo.findById(id);
 		
 		request.setAttribute("articulo", articu);
 		
@@ -92,8 +94,8 @@ public class ArticulosController extends HttpServlet {
 	private void getIndex(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
 	
-		ArticuloRepo repo = ArticulosRepoSingleton.getInstance();
-		List <Articulo> listaArt = repo.getAll();
+		
+		List <Articulo> listaArt = articulosRepo.getAll();
 		request.setAttribute("listita", listaArt);
 		
 		
@@ -155,25 +157,38 @@ public class ArticulosController extends HttpServlet {
 		response.sendRedirect("articulos");
 	}
 
-//NO ME ESTA EDITANDO, ME CREA UNO NUEVO
+
 	private void postUpdate(HttpServletRequest request, HttpServletResponse response) throws IOException {
-		String sId= request.getParameter("id");
-		int id= Integer.parseInt(sId);
-		
-		String nombre = request.getParameter("nombre");
-		String descripcion = request.getParameter("descripcion");
-		String sPrecio = request.getParameter("precio");
-		double precio= Double.parseDouble(sPrecio);
-		
-		Articulo articu = articulosRepo.findById(id);
-		articu.setNombre(nombre);
-		articu.setDescripcion(descripcion);
-		articu.setPrecio(precio);
-		// ESTO ES SOLAMENTE PARA BASE DE DATOS
-		articulosRepo.update(articu);
-		
-		response.sendRedirect("articulos");
+	    String sId = request.getParameter("id");
+	    int id = Integer.parseInt(sId);  
+
+	   
+	    String nombre = request.getParameter("nombre");
+	    String descripcion = request.getParameter("descripcion");
+	    String sPrecio = request.getParameter("precio");
+	    double precio = Double.parseDouble(sPrecio);  
+
+	  
+	    Articulo articulo = articulosRepo.findById(id);
+
+	   
+	    if (articulo != null) {
+	        articulo.setNombre(nombre);  
+	        articulo.setDescripcion(descripcion); 
+	        articulo.setPrecio(precio);  
+
+	       
+	        articulosRepo.update(articulo);
+
+	       
+	        response.sendRedirect("articulos");
+	    } else {
+	       
+	        response.getWriter().write("Artículo no encontrado para actualizar.");
+	    }
+	}
+
 		
 	}
 
-}
+
