@@ -9,14 +9,11 @@
 </head>
 <body>
 
-
 <form action="menu" method="get">
     <button type="submit">Volver al Menú</button>
 </form>
 
-
 <h1>Bienvenido <c:out value="${sessionScope.usuario.nombre}" default="Desconocido"/></h1>
-
 
 <a href="articulos?accion=create">
     <button type="button">Agregar artículo</button>
@@ -67,7 +64,7 @@
         </tr>
     </thead>
     <tbody>
-        <c:forEach var="articulo" items="${carrito}">
+        <c:forEach var="articulo" items="${sessionScope.carrito}">
             <tr>
                 <td><c:out value="${articulo.id}" /></td>
                 <td><c:out value="${articulo.nombre}" /></td>
@@ -77,6 +74,15 @@
         </c:forEach>
     </tbody>
 </table>
+
+<h3>Total: 
+    <c:out value="${sessionScope.totalCarrito != null ? sessionScope.totalCarrito : 0}" />
+</h3>
+
+<form action="views/articulos/factura.jsp" method="get">
+    <button type="submit">Finalizar compra</button>
+</form>
+
 
 </body>
 </html>

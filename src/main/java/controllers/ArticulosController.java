@@ -134,6 +134,7 @@ public class ArticulosController extends HttpServlet {
 		case "update" -> postUpdate(request,response);
 		case "delete" -> postDelete(request,response);
 		 case "agregarAlCarrito" -> postAgregarAlCarrito(request, response);
+		 case "finalizarCompra" -> postFinalizarCompra(request, response);
 		default -> response.sendError(404);
 		
 		}
@@ -194,35 +195,94 @@ public class ArticulosController extends HttpServlet {
 	    String sId = request.getParameter("id");
 	    int id = Integer.parseInt(sId);
 
-	  
 	    Articulo articulo = articulosRepo.findById(id);
 
 	    if (articulo != null) {
-	        
+	        // Recuperar el carrito de la sesión
 	        List<Articulo> carrito = (List<Articulo>) request.getSession().getAttribute("carrito");
 	        if (carrito == null) {
 	            carrito = new ArrayList<>();
 	            request.getSession().setAttribute("carrito", carrito);
 	        }
 
-	       
+	        // Agregar el artículo al carrito
 	        carrito.add(articulo);
 
-	       
-	        articulosRepo.delete(id); 
+	     // Calcular el total del carrito
+	        double total = 0;
+	        for (Articulo a : carrito) {
+	            total += a.getPrecio();
+	        }
 
-	       
+	        // Establecer el total actualizado en la sesión con la clave correcta
+	        request.getSession().setAttribute("totalCarrito", total);
+
+	        // Eliminar el artículo del inventario
+	        articulosRepo.delete(id);
+
+	        // Redirigir a la misma página para mostrar los cambios
 	        response.sendRedirect("articulos?accion=index");
 	    } else {
-	       
 	        response.sendError(404, "Artículo no encontrado");
 	    }
 	}
+	
+//	private void postFinalizarCompra(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+//	  
+//	    List<Articulo> carrito = (List<Articulo>) request.getSession().getAttribute("carrito");
+//
+//	 
+//	    double total = 0;
+//	    for (Articulo a : carrito) {
+//	        total += a.getPrecio();
+//	    }
+//
+//	
+//	    request.getSession().setAttribute("totalCarrito", total);
+//	    
+//	    //request.getSession().removeAttribute("carrito");
+//
+//	   
+//	    request.getRequestDispatcher("/views/articulos/factura.jsp").forward(request, response);
+//	}
+	private void postFinalizarCompra(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    // Obtener los artículos del carrito de la sesión
+	    List<Articulo> carrito = (List<Articulo>) request.getSession().getAttribute("carrito");
+
+	    
+	    if (carrito == null) {
+	       
+	        response.sendRedirect("error.jsp");
+	        return;
+	    }
+
+	    // Calcular el total
+	    double total = 0;
+	    for (Articulo a : carrito) {
+	        total += a.getPrecio();
+	    }
+
+	    request.getSession().setAttribute("totalCarrito", total);
+	    
+	    request.getSession().setAttribute("carrito", carrito);
+
+	   
+	    request.getRequestDispatcher("/views/articulos/factura.jsp").forward(request, response);
+
+	    
+	    //request.getRequestDispatcher("/views/articulos/factura.jsp").forward(request, response);
+
+
+
+	    
+
+	}
+	
+
+
 
 
 
 	
 	    }
-
-	
 

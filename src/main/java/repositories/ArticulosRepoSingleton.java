@@ -24,12 +24,22 @@ private List<Articulo> listaArticulos;
 	
 	private ArticulosRepoSingleton() {
 		this.listaArticulos = new ArrayList<Articulo>();
-		Articulo articulo1 = new Articulo("Alfajor", "Triple", 1000);
-		Articulo articulo2 = new Articulo("Agua", "de pozo", 1000);
-		Articulo articulo3 = new Articulo("Coquita", "rica", 2000);
+		Articulo articulo1 = new Articulo("Alfajor", "Triple", 1700);
+		Articulo articulo2 = new Articulo("Agua", "Manaos", 1000);
+		Articulo articulo3 = new Articulo("Cerveza", "Brahma", 3000);
+		Articulo articulo4 = new Articulo("Leche", "vaca contenta", 1500);
+		Articulo articulo5 = new Articulo("Galletitas", "Oreo", 1900);
+		Articulo articulo6 = new Articulo("Aromatizador", "Saphirus", 2000);
+		Articulo articulo7 = new Articulo("Coquita", "Coca-cola", 1700);
+		Articulo articulo8 = new Articulo("Leche", "vaca contenta", 1500);
 		this.insert(articulo1);
 		this.insert(articulo2);
 		this.insert(articulo3);
+		this.insert(articulo4);
+		this.insert(articulo5);
+		this.insert(articulo6);
+		this.insert(articulo7);
+		this.insert(articulo8);
 			
 	}
 	@Override
@@ -104,3 +114,5 @@ private List<Articulo> listaArticulos;
 	}
 
 }
+
+
