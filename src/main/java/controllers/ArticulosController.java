@@ -1,6 +1,7 @@
 package controllers;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -132,6 +133,7 @@ public class ArticulosController extends HttpServlet {
 		case "insert" -> postInsert(request,response);
 		case "update" -> postUpdate(request,response);
 		case "delete" -> postDelete(request,response);
+		 case "agregarAlCarrito" -> postAgregarAlCarrito(request, response);
 		default -> response.sendError(404);
 		
 		}
@@ -187,8 +189,40 @@ public class ArticulosController extends HttpServlet {
 	        response.getWriter().write("Artículo no encontrado para actualizar.");
 	    }
 	}
+	
+	private void postAgregarAlCarrito(HttpServletRequest request, HttpServletResponse response) throws IOException {
+	    String sId = request.getParameter("id");
+	    int id = Integer.parseInt(sId);
 
-		
+	  
+	    Articulo articulo = articulosRepo.findById(id);
+
+	    if (articulo != null) {
+	        
+	        List<Articulo> carrito = (List<Articulo>) request.getSession().getAttribute("carrito");
+	        if (carrito == null) {
+	            carrito = new ArrayList<>();
+	            request.getSession().setAttribute("carrito", carrito);
+	        }
+
+	       
+	        carrito.add(articulo);
+
+	       
+	        articulosRepo.delete(id); 
+
+	       
+	        response.sendRedirect("articulos?accion=index");
+	    } else {
+	       
+	        response.sendError(404, "Artículo no encontrado");
+	    }
 	}
 
+
+
+	
+	    }
+
+	
 

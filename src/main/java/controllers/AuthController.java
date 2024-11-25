@@ -7,9 +7,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.RequestDispatcher;
 
 import repositories.UsuarioRepoSingleton;
 import models.Usuario;
+
 
 @WebServlet("/auth")
 public class AuthController extends HttpServlet {
@@ -24,22 +26,21 @@ public class AuthController extends HttpServlet {
         String nombre = request.getParameter("usuario"); 
         String contraseña = request.getParameter("contraseña"); 
 
-        
         Usuario usuario = usuarioRepo.findByUsernameAndPassword(nombre, contraseña);
 
         if (usuario != null) {
             HttpSession session = request.getSession();
             session.setAttribute("usuario", usuario);  
-            response.sendRedirect("articulos");  
+            
+           
+            RequestDispatcher dispatcher = request.getRequestDispatcher("/views/articulos/menuOpciones.jsp");
+            dispatcher.forward(request, response);  
         } else {
-            response.getWriter().write("Usuario o contraseña incorrectos");
+            response.sendRedirect("articulos");
         }
     }
 
-    
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.getRequestDispatcher("/views/auth/login.jsp").forward(request, response);
     }
 }
-
-

@@ -1,52 +1,82 @@
+<%@ page language="java" contentType="text/html; charset=ISO-8859-1" pageEncoding="ISO-8859-1"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
-    pageEncoding="ISO-8859-1"%>
-    <%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-  
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset="ISO-8859-1">
-<title>Articulos</title>
+    <meta charset="ISO-8859-1">
+    <title>Artículos</title>
 </head>
 <body>
 
-<h1>Bienvenido <c:out value="${sessionScope.usuario.nombre }" default="Desconocido"/></h1>
+
+<form action="menu" method="get">
+    <button type="submit">Volver al Menú</button>
+</form>
 
 
+<h1>Bienvenido <c:out value="${sessionScope.usuario.nombre}" default="Desconocido"/></h1>
 
 
-<a href="articulos?accion=create">Agregar articulo</a>
-<table border ="1">
-<thead>
-<tr>
-<th>ID</th>
-<th>Nombre</th>
-<th>Precio</th>
-<th>Descripcion</th>
-<th></th>
-<th></th>
-</tr>
-</thead>
-<tbody>
-<c:forEach var = "articulo" items="${listita }">
-<tr>
-<td><c:out value="${articulo.id }"></c:out> </td>
-<td><c:out value="${articulo.nombre }"></c:out> </td>
-<td><c:out value="${articulo.precio }"></c:out> </td>
-<td><c:out value="${articulo.descripcion }"></c:out> </td>
-<td><a href="articulos?accion=show&id=${articulo.id }">Ver</a> </td>
-<td><a href="articulos?accion=edit&id=${articulo.id }">Editar</a> </td>
+<a href="articulos?accion=create">
+    <button type="button">Agregar artículo</button>
+</a>
 
+<h2>Lista de Artículos</h2>
 
-</tr>
-
-
-</c:forEach>
-
-</tbody>
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Descripción</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="articulo" items="${listita}">
+            <tr>
+                <td><c:out value="${articulo.id}" /></td>
+                <td><c:out value="${articulo.nombre}" /></td>
+                <td><c:out value="${articulo.precio}" /></td>
+                <td><c:out value="${articulo.descripcion}" /></td>
+                <td>
+                    <a href="articulos?accion=show&id=${articulo.id}">Ver</a> |
+                    <a href="articulos?accion=edit&id=${articulo.id}">Editar</a> |
+                    
+                    <form action="articulos?accion=agregarAlCarrito" method="post" style="display:inline;">
+                        <input type="hidden" name="id" value="${articulo.id}" />
+                        <button type="submit">Agregar al Carrito</button>
+                    </form>
+                </td>
+            </tr>
+        </c:forEach>
+    </tbody>
 </table>
 
+<h2>Carrito de Compras</h2>
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Precio</th>
+            <th>Descripción</th>
+        </tr>
+    </thead>
+    <tbody>
+        <c:forEach var="articulo" items="${carrito}">
+            <tr>
+                <td><c:out value="${articulo.id}" /></td>
+                <td><c:out value="${articulo.nombre}" /></td>
+                <td><c:out value="${articulo.precio}" /></td>
+                <td><c:out value="${articulo.descripcion}" /></td>
+            </tr>
+        </c:forEach>
+    </tbody>
+</table>
 
 </body>
 </html>

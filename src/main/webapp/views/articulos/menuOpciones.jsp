@@ -9,7 +9,7 @@
 
 <h1>Bienvenido <c:out value="${sessionScope.usuario.nombre }" default="Desconocido"/></h1>
 
-<!-- Botones del menú -->
+
 <form action="articulos" method="get">
     <button type="submit">Ver Artículos</button>
 </form>
